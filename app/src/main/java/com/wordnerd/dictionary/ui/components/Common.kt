@@ -2,7 +2,6 @@ package com.wordnerd.dictionary.ui.components
 
 import android.content.Context
 import android.content.Intent
-import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -17,19 +16,15 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.clickable
 import com.wordnerd.dictionary.data.Word
 import com.wordnerd.dictionary.ui.theme.HeadwordFont
-import java.util.Locale
 
 @Composable
 fun WordListItem(
@@ -88,21 +83,6 @@ fun FavoriteButton(isFavorite: Boolean, onToggle: () -> Unit) {
             else MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
-}
-
-/** A text-to-speech engine scoped to the composition. Returns a "speak" function. */
-@Composable
-fun rememberSpeaker(): (String) -> Unit {
-    val context = LocalContext.current
-    val tts = remember {
-        var engine: TextToSpeech? = null
-        engine = TextToSpeech(context.applicationContext) { status ->
-            if (status == TextToSpeech.SUCCESS) engine?.language = Locale.US
-        }
-        engine
-    }
-    DisposableEffect(tts) { onDispose { tts.shutdown() } }
-    return { text -> tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, text) }
 }
 
 fun shareWord(context: Context, word: Word) {

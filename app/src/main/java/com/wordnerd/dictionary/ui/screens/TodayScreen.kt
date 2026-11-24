@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Casino
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -50,7 +51,6 @@ import com.wordnerd.dictionary.WordViewModel
 import com.wordnerd.dictionary.data.ALL_WORDS
 import com.wordnerd.dictionary.data.Category
 import com.wordnerd.dictionary.data.Word
-import com.wordnerd.dictionary.ui.components.rememberSpeaker
 import com.wordnerd.dictionary.ui.components.shareWord
 import com.wordnerd.dictionary.ui.theme.HeadwordFont
 import java.time.LocalDate
@@ -62,10 +62,10 @@ fun TodayScreen(
     vm: WordViewModel,
     onOpenWord: (Word) -> Unit,
     onOpenCategory: (Category) -> Unit,
+    onOpenSettings: () -> Unit,
 ) {
     val favorites by vm.favorites.collectAsState()
     val discover by vm.discover.collectAsState()
-    val speak = rememberSpeaker()
     val context = LocalContext.current
     val scroll = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -74,6 +74,11 @@ fun TodayScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Word Nerd", fontFamily = HeadwordFont, fontWeight = FontWeight.SemiBold) },
+                actions = {
+                    IconButton(onClick = onOpenSettings) {
+                        Icon(Icons.Outlined.Settings, contentDescription = "Settings")
+                    }
+                },
                 scrollBehavior = scroll,
             )
         },
@@ -101,7 +106,7 @@ fun TodayScreen(
                     word = w,
                     isFavorite = w.id in favorites,
                     onClick = { onOpenWord(w) },
-                    onSpeak = { speak(w.word) },
+                    onSpeak = { vm.speak(w.word) },
                     onFavorite = { vm.toggleFavorite(w.id) },
                     onShare = { shareWord(context, w) },
                 )

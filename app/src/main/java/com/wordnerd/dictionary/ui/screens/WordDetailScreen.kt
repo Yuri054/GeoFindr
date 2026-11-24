@@ -54,7 +54,6 @@ import com.wordnerd.dictionary.WordViewModel
 import com.wordnerd.dictionary.data.ALL_WORDS
 import com.wordnerd.dictionary.data.Word
 import com.wordnerd.dictionary.ui.components.FavoriteButton
-import com.wordnerd.dictionary.ui.components.rememberSpeaker
 import com.wordnerd.dictionary.ui.components.shareWord
 import com.wordnerd.dictionary.ui.theme.HeadwordFont
 import kotlinx.coroutines.launch
@@ -69,7 +68,6 @@ fun WordDetailScreen(
     onOpenCategory: () -> Unit,
 ) {
     val favorites by vm.favorites.collectAsState()
-    val speak = rememberSpeaker()
     val context = LocalContext.current
     val clipboard = LocalClipboardManager.current
     val snackbar = remember { SnackbarHostState() }
@@ -118,7 +116,7 @@ fun WordDetailScreen(
                     )
                     Spacer(Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        FilledIconButton(onClick = { speak(word.word) }) {
+                        FilledIconButton(onClick = { vm.speak(word.word) }) {
                             Icon(Icons.AutoMirrored.Outlined.VolumeUp, contentDescription = "Pronounce")
                         }
                         Spacer(Modifier.width(12.dp))

@@ -8,6 +8,10 @@ Compose and Material 3 (Material You), in the style of Google's own apps.
 |---|---|---|---|---|
 | ![](docs/screenshots/1_today.png) | ![](docs/screenshots/2_browse.png) | ![](docs/screenshots/3_search.png) | ![](docs/screenshots/4_detail.png) | ![](docs/screenshots/5_saved.png) |
 
+| Settings | Notification time |
+|---|---|
+| ![](docs/screenshots/7_settings_on.png) | ![](docs/screenshots/8_time_picker.png) |
+
 ## Features
 - **Word of the day**: a new word every day, with Save and Share buttons.
 - **Discover**: shuffle through random words.
@@ -16,6 +20,9 @@ Compose and Material 3 (Material You), in the style of Google's own apps.
 - **Word pages**: pronunciation (tap the speaker to hear it read aloud), part of speech,
   definition, an example sentence, origin/etymology, and related words.
 - **Saved**: bookmark favourites; they are kept on the device with DataStore.
+- **Daily word notification** (Settings, gear icon on Today): turn it on, pick a time,
+  and get the word of the day every day; tapping it opens the word. Asks for the
+  notification permission on Android 13+, and keeps its schedule through reboots.
 - Copy and share any word.
 - Material You dynamic color on Android 12+ (with a teal fallback palette), dark theme,
   edge-to-edge, splash screen, and a themed adaptive icon.

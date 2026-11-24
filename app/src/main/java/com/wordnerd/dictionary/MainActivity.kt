@@ -1,5 +1,6 @@
 package com.wordnerd.dictionary
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +19,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -30,18 +33,35 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.wordnerd.dictionary.data.wordById
 import com.wordnerd.dictionary.ui.screens.BrowseScreen
+import com.wordnerd.dictionary.notifications.DailyWordNotifier
 import com.wordnerd.dictionary.ui.screens.SavedScreen
+import com.wordnerd.dictionary.ui.screens.SettingsScreen
 import com.wordnerd.dictionary.ui.screens.TodayScreen
 import com.wordnerd.dictionary.ui.screens.WordDetailScreen
 import com.wordnerd.dictionary.ui.theme.WordNerdTheme
 
 class MainActivity : ComponentActivity() {
+    /** Word to open, set when the app is launched from the daily notification. */
+    private val deepLinkWord = mutableStateOf<String?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        setContent { WordNerdTheme { WordNerdApp() } }
+        if (savedInstanceState == null) deepLinkWord.value = intent.wordExtra()
+        setContent {
+            WordNerdTheme {
+                WordNerdApp(deepLinkWord = deepLinkWord.value, onDeepLinkHandled = { deepLinkWord.value = null })
+            }
+        }
     }
+
+    public override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.wordExtra()?.let { deepLinkWord.value = it }
+    }
+
+    private fun Intent.wordExtra(): String? = getStringExtra(DailyWordNotifier.EXTRA_WORD_ID)
 }
 
 private enum class Tab(val route: String, val label: String, val icon: ImageVector, val selectedIcon: ImageVector) {
@@ -52,7 +72,11 @@ private enum class Tab(val route: String, val label: String, val icon: ImageVect
 
 @Suppress("DEPRECATION")
 @Composable
-private fun WordNerdApp(vm: WordViewModel = viewModel()) {
+private fun WordNerdApp(
+    deepLinkWord: String?,
+    onDeepLinkHandled: () -> Unit,
+    vm: WordViewModel = viewModel(),
+) {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
@@ -63,6 +87,11 @@ private fun WordNerdApp(vm: WordViewModel = viewModel()) {
         restoreState = true
     }
     fun openWord(id: String) = nav.navigate("word/$id")
+
+    LaunchedEffect(deepLinkWord) {
+        if (deepLinkWord != null && wordById(deepLinkWord) != null) openWord(deepLinkWord)
+        if (deepLinkWord != null) onDeepLinkHandled()
+    }
 
     Scaffold(
         bottomBar = {
@@ -87,8 +116,10 @@ private fun WordNerdApp(vm: WordViewModel = viewModel()) {
                     vm,
                     onOpenWord = { openWord(it.id) },
                     onOpenCategory = { vm.setQuery(""); vm.setCategory(it); goTab(Tab.BROWSE) },
+                    onOpenSettings = { nav.navigate("settings") },
                 )
             }
+            composable("settings") { SettingsScreen(vm, onBack = { nav.popBackStack() }) }
             composable(Tab.BROWSE.route) { BrowseScreen(vm) { openWord(it.id) } }
             composable(Tab.SAVED.route) { SavedScreen(vm) { openWord(it.id) } }
             composable("word/{id}") { back ->

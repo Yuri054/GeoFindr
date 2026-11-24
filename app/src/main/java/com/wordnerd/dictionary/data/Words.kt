@@ -9,6 +9,8 @@ import com.wordnerd.dictionary.data.Category.PEOPLE
 import com.wordnerd.dictionary.data.Category.TIME
 import com.wordnerd.dictionary.data.Category.WANDERING
 import com.wordnerd.dictionary.data.Category.WORDS
+import java.time.LocalDate
+import kotlin.random.Random
 
 private const val N = "noun"
 private const val ADJ = "adjective"
@@ -587,3 +589,9 @@ val ALL_WORDS: List<Word> = listOf(
 private val BY_ID: Map<String, Word> = ALL_WORDS.associateBy { it.id }
 
 fun wordById(id: String): Word? = BY_ID[id]
+
+private val DAILY_ORDER: List<Word> by lazy { ALL_WORDS.shuffled(Random(20261123)) }
+
+/** Word of the day: a fixed shuffle of the lexicon, stepped one word per calendar day. */
+fun wordOfTheDay(date: LocalDate = LocalDate.now()): Word =
+    DAILY_ORDER[Math.floorMod(date.toEpochDay(), DAILY_ORDER.size.toLong()).toInt()]
