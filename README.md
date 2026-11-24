@@ -37,7 +37,7 @@ living use, or a loanword English speakers genuinely use and write about (*hygge
 recorded once in old texts are left out.
 
 ## Install
-Download the APK from [Releases](https://github.com/yuri054/WordNerd/releases)
+Download the APK from [Releases](https://github.com/Yuri054/Word-Nerd/releases)
 (Android 8.0 or later). An F-Droid listing is in progress; the recipe is in
 [`docs/fdroid/`](docs/fdroid/io.github.yuri054.wordnerd.yml) and the store listing in
 [`fastlane/`](fastlane/metadata/android/en-US).

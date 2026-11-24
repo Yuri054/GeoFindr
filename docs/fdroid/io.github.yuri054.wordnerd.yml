@@ -4,14 +4,14 @@ Categories:
   - Reading
   - Science & Education
 License: GPL-3.0-only
-SourceCode: https://github.com/yuri054/WordNerd
-IssueTracker: https://github.com/yuri054/WordNerd/issues
-Changelog: https://github.com/yuri054/WordNerd/releases
+SourceCode: https://github.com/Yuri054/Word-Nerd
+IssueTracker: https://github.com/Yuri054/Word-Nerd/issues
+Changelog: https://github.com/Yuri054/Word-Nerd/releases
 
 AutoName: Word Nerd
 
 RepoType: git
-Repo: https://github.com/yuri054/WordNerd.git
+Repo: https://github.com/Yuri054/Word-Nerd.git
 
 Builds:
   - versionName: '1.3'
