@@ -37,15 +37,28 @@ living use, or a loanword English speakers genuinely use and write about (*hygge
 recorded once in old texts are left out.
 
 ## Install
-Sideload `WordNerd.apk` (a release build signed with a debug key) on Android 8.0 or later.
+Download the APK from [Releases](https://github.com/yuri054/WordNerd/releases)
+(Android 8.0 or later). An F-Droid listing is in progress; the recipe is in
+[`docs/fdroid/`](docs/fdroid/io.github.yuri054.wordnerd.yml) and the store listing in
+[`fastlane/`](fastlane/metadata/android/en-US).
 
 ## Build
 Requires JDK 17+ and the Android SDK (platform 35).
 ```
 ./gradlew assembleDebug        # app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease      # unsigned unless keystore.properties exists (see app/build.gradle.kts)
 ./gradlew testDebugUnitTest    # Robolectric screenshots → app/build/screenshots
 ```
 
 ## Adding words
 Edit `app/src/main/java/com/wordnerd/dictionary/data/Words.kt`; each entry is one
 `w(word, pronunciation, partOfSpeech, definition, origin, example, category)` call.
+
+## Releasing
+1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`.
+2. Add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
+3. Commit, then tag `v<versionName>` (e.g. `v1.4`) and push the tag. F-Droid picks up
+   new tags automatically.
+
+## License
+[GPL-3.0](LICENSE)

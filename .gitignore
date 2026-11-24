@@ -6,3 +6,10 @@ local.properties
 .DS_Store
 captures/
 .kotlin/
+
+# Built APKs go on GitHub Releases, not in the repo (F-Droid rejects binaries)
+*.apk
+*.aab
+keystore.properties
+*.jks
+*.keystore

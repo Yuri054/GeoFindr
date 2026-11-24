@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -9,11 +11,27 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.wordnerd.dictionary"
+        applicationId = "io.github.yuri054.wordnerd"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
+    }
+
+    // Optional release signing for your own GitHub releases. Put a keystore.properties
+    // (storeFile, storePassword, keyAlias, keyPassword) in the project root; it is
+    // git-ignored. Without it the release APK is unsigned, which is what F-Droid expects:
+    // F-Droid builds from source and signs with its own key.
+    val keystoreFile = rootProject.file("keystore.properties")
+    if (keystoreFile.exists()) {
+        val props = Properties()
+        keystoreFile.inputStream().use { props.load(it) }
+        signingConfigs.create("release") {
+            storeFile = rootProject.file(props.getProperty("storeFile"))
+            storePassword = props.getProperty("storePassword")
+            keyAlias = props.getProperty("keyAlias")
+            keyPassword = props.getProperty("keyPassword")
+        }
     }
 
     buildTypes {
@@ -21,9 +39,14 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            // Signed with the debug key so the release APK installs out of the box.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfigs.findByName("release")?.let { signingConfig = it }
         }
+    }
+
+    // F-Droid rejects the encrypted dependency report Google Play's tooling embeds.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -1,0 +1,5 @@
+First F-Droid release.
+• 481 words across 11 themes
+• Word of the day with optional daily notification
+• Search by word, meaning or origin
+• Pronunciation read aloud, saved favourites, share and copy

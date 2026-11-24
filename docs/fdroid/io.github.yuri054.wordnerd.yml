@@ -1,0 +1,27 @@
+# Recipe for F-Droid. Copy this file to metadata/io.github.yuri054.wordnerd.yml in your
+# fork of https://gitlab.com/fdroid/fdroiddata and open a merge request.
+Categories:
+  - Reading
+  - Science & Education
+License: GPL-3.0-only
+SourceCode: https://github.com/yuri054/WordNerd
+IssueTracker: https://github.com/yuri054/WordNerd/issues
+Changelog: https://github.com/yuri054/WordNerd/releases
+
+AutoName: Word Nerd
+
+RepoType: git
+Repo: https://github.com/yuri054/WordNerd.git
+
+Builds:
+  - versionName: '1.3'
+    versionCode: 4
+    commit: v1.3
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.3'
+CurrentVersionCode: 4

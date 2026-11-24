@@ -1,0 +1,15 @@
+<p>Word Nerd is a pocket dictionary of rare and delightful words: <i>petrichor</i>, <i>apricity</i>, <i>syzygy</i>, <i>schadenfreude</i>, <i>kvell</i>, <i>Kafkaesque</i> and nearly 480 more.</p>
+
+<p>Every entry has a pronunciation guide you can hear read aloud, a definition, an example sentence, and the story of where the word comes from. Every word is either in standard English dictionaries or a loanword English speakers genuinely use; internet-only coinages are left out.</p>
+
+<p><b>Features</b></p>
+<ul>
+<li>Word of the day, with an optional daily notification at a time you choose</li>
+<li>Discover: shuffle through random words</li>
+<li>Browse A–Z, search words, meanings and origins (try "Yiddish" or "Greek")</li>
+<li>11 themes, including Nature &amp; Sky, Moods &amp; Feelings, Mischief &amp; Nonsense, Mind &amp; Thought and Words from Names</li>
+<li>Save favourites, copy and share words</li>
+<li>Material You design with dynamic colour and dark theme</li>
+</ul>
+
+<p>Works fully offline. No ads, no tracking, no accounts, and no internet permission.</p>
