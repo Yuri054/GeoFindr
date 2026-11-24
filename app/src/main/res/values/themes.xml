@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.WordNerd" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.WordNerd.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.WordNerd</item>
+    </style>
+</resources>
