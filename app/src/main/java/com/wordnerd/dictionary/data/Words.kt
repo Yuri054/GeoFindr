@@ -3,6 +3,7 @@ package com.wordnerd.dictionary.data
 import com.wordnerd.dictionary.data.Category.BODY
 import com.wordnerd.dictionary.data.Category.FEELINGS
 import com.wordnerd.dictionary.data.Category.FOOD
+import com.wordnerd.dictionary.data.Category.MIND
 import com.wordnerd.dictionary.data.Category.MISCHIEF
 import com.wordnerd.dictionary.data.Category.NATURE
 import com.wordnerd.dictionary.data.Category.PEOPLE
@@ -12,17 +13,17 @@ import com.wordnerd.dictionary.data.Category.WORDS
 import java.time.LocalDate
 import kotlin.random.Random
 
-private const val N = "noun"
-private const val ADJ = "adjective"
-private const val V = "verb"
-private const val ADV = "adverb"
+internal const val N = "noun"
+internal const val ADJ = "adjective"
+internal const val V = "verb"
+internal const val ADV = "adverb"
+internal const val PHR = "phrase"
 
-private fun w(
+internal fun w(
     word: String, pron: String, pos: String, def: String, origin: String, ex: String, cat: Category,
 ) = Word(word, pron, pos, def, origin, ex, cat)
 
-/** The full lexicon, sorted alphabetically. */
-val ALL_WORDS: List<Word> = listOf(
+private val CORE_WORDS: List<Word> = listOf(
     // ── Nature & Sky ──────────────────────────────────────────────────────
     w("Petrichor", "PET-rih-kor", N,
         "The earthy scent that rises when rain falls on dry ground.",
@@ -32,10 +33,6 @@ val ALL_WORDS: List<Word> = listOf(
         "The gentle warmth of the sun on a cold winter day.",
         "From Latin apricus, \"warmed by the sun.\" Recorded in English in the 1620s, then nearly forgotten.",
         "We ate lunch on the bench, grateful for a little January apricity.", NATURE),
-    w("Psithurism", "SITH-yur-iz-um", N,
-        "The whispering, rustling sound of wind moving through trees.",
-        "From Greek psithurisma, \"whispering.\"",
-        "She fell asleep in the hammock to the psithurism of the poplars.", NATURE),
     w("Susurrus", "soo-SUR-us", N,
         "A soft murmuring or rustling sound.",
         "Latin for \"a whisper, a hum,\" imitative of the sound itself.",
@@ -68,10 +65,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Fine, filmy cobweb floating in the air; anything delicate and light.",
         "Middle English gos-somer, \"goose summer\" — the mild late-autumn season when such webs appear.",
         "Her scarf was gossamer, almost not there at all.", NATURE),
-    w("Snowbroth", "SNOH-broth", N,
-        "Freshly melted snow; slushy, icy water.",
-        "Snow + broth. Shakespeare used it in Measure for Measure.",
-        "Our boots sank into the gray snowbroth at the curb.", NATURE),
     w("Halcyon", "HAL-see-un", ADJ,
         "Calm, peaceful, and idyllically happy — often of times past.",
         "From Greek alkyon, the kingfisher, a bird fabled to calm the seas while nesting.",
@@ -80,14 +73,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Turning or growing toward the sun.",
         "Greek helios (sun) + tropos (turning).",
         "The heliotropic sunflowers tracked the sky all day.", NATURE),
-    w("Nyctophilia", "nik-toh-FIL-ee-uh", N,
-        "A love of darkness or the night.",
-        "Greek nyx (night) + philia (love).",
-        "Her nyctophilia made her the only one excited about the night shift.", NATURE),
-    w("Smultronställe", "SMOOL-tron-stel-eh", N,
-        "A special, hidden place you treasure and return to for comfort.",
-        "Swedish: \"wild-strawberry patch,\" a spot you'd keep secret.",
-        "That bench above the harbor is my smultronställe.", NATURE),
 
     // ── Moods & Feelings ──────────────────────────────────────────────────
     w("Ataraxia", "at-uh-RAK-see-uh", N,
@@ -102,10 +87,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Beautiful thinking; goodwill felt toward others.",
         "Greek, \"well mind.\" The shortest English word containing all five vowels.",
         "Her letters were full of eunoia and good humor.", FEELINGS),
-    w("Euneirophrenia", "yoo-nye-roh-FREE-nee-uh", N,
-        "The contentment felt after waking from a pleasant dream.",
-        "Greek eu (good) + oneiros (dream) + phren (mind).",
-        "He lay still for a while, savoring his euneirophrenia.", FEELINGS),
     w("Hiraeth", "HEER-eyeth", N,
         "A homesick longing for a home you cannot return to, or that never was.",
         "Welsh, carrying a sense of grief and yearning for one's homeland.",
@@ -138,14 +119,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Pouring your soul, creativity or love into what you do.",
         "Modern Greek, from Turkish merak, \"passion, curiosity.\"",
         "You could taste the meraki in her grandmother's bread.", FEELINGS),
-    w("Respair", "rih-SPAIR", N,
-        "Fresh hope; a recovery from despair.",
-        "Middle English, from re- + Latin sperare (to hope). Recorded once in the 1500s, then lost.",
-        "Spring arrived with a wave of respair.", FEELINGS),
-    w("Uhtceare", "OOHT-kair-uh", N,
-        "Lying awake before dawn, worrying.",
-        "Old English uht (the hour before dawn) + ceare (care, sorrow).",
-        "Uhtceare had him counting ceiling cracks at 4 a.m.", FEELINGS),
     w("Velleity", "veh-LEE-ih-tee", N,
         "A mere wish, too faint to lead to action.",
         "Medieval Latin velleitas, from velle, \"to wish.\"",
@@ -158,10 +131,6 @@ val ALL_WORDS: List<Word> = listOf(
         "A shared, wordless look between two people who each wish the other would make the first move.",
         "From Yaghan, an indigenous language of Tierra del Fuego.",
         "Across the dance floor, a moment of mamihlapinatapai passed between them.", FEELINGS),
-    w("Lalochezia", "lal-oh-KEE-zee-uh", N,
-        "Emotional relief gained by swearing.",
-        "Greek lalia (speech) + chezo (to relieve oneself).",
-        "Stubbing his toe, he sought immediate lalochezia.", FEELINGS),
 
     // ── People & Characters ───────────────────────────────────────────────
     w("Pogonophile", "poh-GON-oh-file", N,
@@ -212,10 +181,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Someone who quibbles over trivial details; a petty, shady lawyer.",
         "Petty + obsolete fogger, \"a cheat.\"",
         "The pettifogger argued for an hour about a comma.", PEOPLE),
-    w("Bibliotaph", "BIB-lee-oh-taf", N,
-        "A person who hoards books, sometimes keeping them under lock and key.",
-        "Greek biblion (book) + taphos (tomb).",
-        "A bibliotaph, he refused to lend even a paperback.", PEOPLE),
     w("Autodidact", "aw-toh-DY-dakt", N,
         "A self-taught person.",
         "Greek autos (self) + didaktos (taught).",
@@ -224,10 +189,6 @@ val ALL_WORDS: List<Word> = listOf(
         "A lover of cats.",
         "Greek ailouros (cat) + -phile.",
         "The ailurophile's house had more scratching posts than chairs.", PEOPLE),
-    w("Cynophilist", "sih-NOF-ih-list", N,
-        "A lover of dogs.",
-        "Greek kyon (dog) + philos (loving).",
-        "A true cynophilist, he knew every dog in the park by name.", PEOPLE),
     w("Somnambulist", "som-NAM-byuh-list", N,
         "A sleepwalker.",
         "Latin somnus (sleep) + ambulare (to walk).",
@@ -236,36 +197,16 @@ val ALL_WORDS: List<Word> = listOf(
         "An idle spectator who enjoys watching activity on canals.",
         "British, possibly from dialect gawn and gooze, both meaning \"to stare.\"",
         "A row of gongoozlers watched the narrowboat navigate the lock.", PEOPLE),
-    w("Snoutfair", "SNOWT-fair", N,
-        "A good-looking person.",
-        "Old English compound of snout (face) + fair. Mostly obsolete since the 1600s.",
-        "Every snoutfair in town showed up for the gala.", PEOPLE),
 
     // ── Travel & Wandering ───────────────────────────────────────────────
     w("Mundivagant", "mun-DIV-uh-gunt", ADJ,
         "Roaming over the whole world.",
         "Latin mundus (world) + vagari (to wander).",
         "Her mundivagant uncle sent postcards from five continents.", WANDERING),
-    w("Solivagant", "soh-LIV-uh-gunt", ADJ,
-        "Wandering alone.",
-        "Latin solus (alone) + vagari (to wander).",
-        "He was a solivagant hiker who preferred no company but the trail.", WANDERING),
     w("Peregrination", "per-uh-grih-NAY-shun", N,
         "A long, meandering journey, especially on foot.",
         "Latin peregrinari, \"to travel abroad,\" from per (through) + ager (field).",
         "Their peregrination took them from Lisbon to Istanbul.", WANDERING),
-    w("Resfeber", "RACE-fay-ber", N,
-        "The jittery mix of excitement and nerves before a journey.",
-        "Swedish: resa (travel) + feber (fever).",
-        "Resfeber kept her awake the night before the flight.", WANDERING),
-    w("Nefelibata", "neh-feh-lee-BAH-tah", N,
-        "A cloud-walker: a dreamer who lives by their imagination rather than convention.",
-        "Portuguese and Spanish, from Greek nephele (cloud) + bates (walker).",
-        "A lifelong nefelibata, he painted cities that never existed.", WANDERING),
-    w("Novaturient", "noh-vuh-TOOR-ee-ent", ADJ,
-        "Craving a powerful change in one's life or surroundings.",
-        "Latin novare, \"to make new.\"",
-        "Feeling novaturient, she sold her car and bought a one-way ticket.", WANDERING),
     w("Absquatulate", "ab-SKWOT-yuh-layt", V,
         "To leave abruptly; to make off.",
         "Mock-Latin American slang from the 1830s, a blend of abscond + squat + perambulate.",
@@ -278,14 +219,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Relating to a transitional, in-between threshold or state.",
         "Latin limen, \"threshold.\"",
         "Airports at midnight have a strange, liminal quiet.", WANDERING),
-    w("Selcouth", "SEL-kooth", ADJ,
-        "Strange, unfamiliar, yet marvelous.",
-        "Old English seldcuth: seldan (seldom) + cuth (known).",
-        "The market was full of selcouth fruits she'd never seen.", WANDERING),
-    w("Abditory", "AB-dih-tor-ee", N,
-        "A hiding place for treasured things.",
-        "Latin abditorium, from abdere, \"to hide away.\"",
-        "The loose floorboard was the children's abditory.", WANDERING),
     w("Cattywampus", "KAT-ee-wom-pus", ADJ,
         "Askew, crooked, or diagonally positioned.",
         "American dialect, probably from catercorner + a playful suffix.",
@@ -304,18 +237,10 @@ val ALL_WORDS: List<Word> = listOf(
         "A lover of words.",
         "Greek logos (word) + -phile.",
         "Every logophile needs a copy of this app.", WORDS),
-    w("Lexiphanic", "lek-sih-FAN-ik", ADJ,
-        "Showing off with pretentious, bombastic vocabulary.",
-        "Greek lexiphanes, \"phrase-monger.\"",
-        "The essay was lexiphanic, all polish and no point.", WORDS),
     w("Logorrhea", "log-uh-REE-uh", N,
         "Excessive, often incoherent talkativeness.",
         "Greek logos (word) + rhoia (flow).",
         "The host's logorrhea left no room for the guests.", WORDS),
-    w("Lethologica", "leth-oh-LOJ-ih-kuh", N,
-        "The inability to recall a word you know.",
-        "Greek lethe (forgetfulness) + logos (word).",
-        "Lethologica struck mid-sentence: \"you know, the thing, the — spatula!\"", WORDS),
     w("Palimpsest", "PAL-imp-sest", N,
         "A manuscript scraped and reused, with traces of earlier writing still visible; anything with layered history.",
         "Greek palin (again) + psestos (scraped).",
@@ -367,15 +292,15 @@ val ALL_WORDS: List<Word> = listOf(
     w("Serendipity", "ser-un-DIP-ih-tee", N,
         "Finding something valuable or delightful by happy accident.",
         "Coined in 1754 by Horace Walpole after a Persian tale, The Three Princes of Serendip.",
-        "By pure serendipity, the book she needed fell off the shelf.", WORDS),
+        "By pure serendipity, the book she needed fell off the shelf.", MIND),
     w("Pareidolia", "pair-eye-DOH-lee-uh", N,
         "Seeing faces or familiar shapes in random patterns.",
         "Greek para (beside) + eidolon (image).",
-        "Thanks to pareidolia, the electrical outlet looked shocked.", WORDS),
+        "Thanks to pareidolia, the electrical outlet looked shocked.", MIND),
     w("Apophenia", "ap-oh-FEE-nee-uh", N,
         "The tendency to perceive meaningful connections between unrelated things.",
         "Coined in 1958 by psychiatrist Klaus Conrad, from Greek apophainein, \"to show.\"",
-        "Seeing omens in license plates is a mild apophenia.", WORDS),
+        "Seeing omens in license plates is a mild apophenia.", MIND),
 
     // ── Body & Senses ────────────────────────────────────────────────────
     w("Philtrum", "FIL-trum", N,
@@ -410,18 +335,10 @@ val ALL_WORDS: List<Word> = listOf(
         "Relating to the hazy state just before fully waking.",
         "Greek hypnos (sleep) + pompe (sending away).",
         "In a hypnopompic fog, he tried to answer the alarm clock.", BODY),
-    w("Clinomania", "kly-noh-MAY-nee-uh", N,
-        "An overwhelming desire to stay in bed.",
-        "Greek kline (bed) + mania.",
-        "Monday mornings bring on acute clinomania.", BODY),
     w("Phosphene", "FOS-feen", N,
         "Rings or sparks of light seen when you press on closed eyes.",
         "Greek phos (light) + phainein (to show).",
         "Rubbing his eyes, he watched phosphenes swirl.", BODY),
-    w("Sialoquent", "sy-AL-oh-kwent", ADJ,
-        "Spraying saliva while speaking.",
-        "Greek sialon (saliva) + Latin loqui (to speak).",
-        "The front row learned to avoid the sialoquent professor.", BODY),
     w("Sillage", "see-YAHZH", N,
         "The trail of scent left in the air by someone's perfume.",
         "French, \"wake\" (as of a ship).",
@@ -476,20 +393,12 @@ val ALL_WORDS: List<Word> = listOf(
         "To spend the summer, especially in a dormant state.",
         "Latin aestivare, from aestas, \"summer.\"",
         "Some snails aestivate through the hottest months.", TIME),
-    w("Fudgel", "FUJ-ul", V,
-        "To pretend to work while actually doing nothing.",
-        "18th-century English slang of uncertain origin.",
-        "He fudgeled at his desk until the clock hit five.", TIME),
     w("Lollygag", "LOL-ee-gag", V,
         "To dawdle, idle, or waste time.",
         "19th-century American, origin unknown.",
         "Stop lollygagging — the bus leaves in two minutes!", TIME),
 
     // ── Food & Drink ─────────────────────────────────────────────────────
-    w("Jentacular", "jen-TAK-yuh-ler", ADJ,
-        "Relating to breakfast.",
-        "Latin jentaculum, \"breakfast.\"",
-        "Pancakes are my jentacular weakness.", FOOD),
     w("Postprandial", "pohst-PRAN-dee-ul", ADJ,
         "Happening after a meal.",
         "Latin post (after) + prandium (late breakfast, lunch).",
@@ -498,10 +407,6 @@ val ALL_WORDS: List<Word> = listOf(
         "Lingering at the table after a meal, talking and enjoying company.",
         "Spanish: sobre (over) + mesa (table).",
         "Dinner lasted an hour; the sobremesa lasted three.", FOOD),
-    w("Groak", "GROHK", V,
-        "To stare at people eating in the silent hope of being offered some.",
-        "Scottish dialect, possibly from Gaelic.",
-        "The dog groaked at every sandwich in the house.", FOOD),
     w("Crapulous", "KRAP-yuh-lus", ADJ,
         "Ill from eating or drinking too much.",
         "Late Latin crapulosus, from Greek kraipale, \"hangover.\"",
@@ -584,7 +489,11 @@ val ALL_WORDS: List<Word> = listOf(
         "Shining brightly; radiant.",
         "Latin effulgere, \"to shine forth.\"",
         "An effulgent sunrise broke over the ridge.", NATURE),
-).sortedBy { it.word.lowercase() }
+)
+
+/** The full lexicon, sorted alphabetically. */
+val ALL_WORDS: List<Word> =
+    (CORE_WORDS + MORE_WORDS + EPONYM_WORDS).sortedBy { it.word.lowercase() }
 
 private val BY_ID: Map<String, Word> = ALL_WORDS.associateBy { it.id }
 

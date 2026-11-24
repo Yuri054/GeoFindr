@@ -23,7 +23,17 @@ class ScreenshotTest {
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
 
     @Test fun wordIdsAreUnique() {
-        assertEquals(ALL_WORDS.size, ALL_WORDS.map { it.id }.toSet().size)
+        val dupes = ALL_WORDS.groupBy { it.id }.filterValues { it.size > 1 }.keys
+        assertEquals("duplicate words: " + dupes, emptySet<String>(), dupes)
+    }
+
+    @Test fun everyThemeHasPlentyOfWords() {
+        com.wordnerd.dictionary.data.Category.entries.forEach { c ->
+            val n = ALL_WORDS.count { it.category == c }
+            org.junit.Assert.assertTrue("${c.label} has only " + n, n >= 15)
+        }
+        println("Lexicon size: " + ALL_WORDS.size + " — " +
+            com.wordnerd.dictionary.data.Category.entries.joinToString { it.label + "=" + ALL_WORDS.count { w -> w.category == it } })
     }
 
     @Test fun walkthrough() {
@@ -33,11 +43,11 @@ class ScreenshotTest {
         rule.waitForIdle()
         rule.onRoot().captureRoboImage("build/screenshots/2_browse.png")
 
-        rule.onNodeWithText("Search words & meanings").performTextInput("bed")
+        rule.onNodeWithText("Search words & meanings").performTextInput("Yiddish")
         rule.waitForIdle()
         rule.onRoot().captureRoboImage("build/screenshots/3_search.png")
 
-        rule.onNodeWithText("Clinomania").performClick()
+        rule.onNodeWithText("Kvell").performClick()
         rule.waitForIdle()
         rule.onRoot().captureRoboImage("build/screenshots/4_detail.png")
         rule.onNodeWithContentDescription("Save word").performClick()

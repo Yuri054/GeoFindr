@@ -78,15 +78,19 @@ class WordViewModel(app: Application) : AndroidViewModel(app) {
 
     val results: StateFlow<List<Word>> = combine(_query, _category) { q, c ->
         val needle = q.trim()
-        ALL_WORDS.filter { w ->
-            (c == null || w.category == c) &&
-                (needle.isEmpty() ||
-                    w.word.contains(needle, ignoreCase = true) ||
-                    w.definition.contains(needle, ignoreCase = true))
-        }.sortedBy { w ->
-            // Headword matches first, then definition matches.
-            if (needle.isNotEmpty() && !w.word.startsWith(needle, ignoreCase = true)) 1 else 0
-        }
+        val inCategory = ALL_WORDS.filter { c == null || it.category == c }
+        if (needle.isEmpty()) return@combine inCategory
+        // Rank: headword prefix, headword substring, definition, then origin
+        // (so "Yiddish" or "Greek" finds words by where they come from).
+        inCategory.mapNotNull { w ->
+            when {
+                w.word.startsWith(needle, ignoreCase = true) -> 0
+                w.word.contains(needle, ignoreCase = true) -> 1
+                w.definition.contains(needle, ignoreCase = true) -> 2
+                w.origin.contains(needle, ignoreCase = true) -> 3
+                else -> null
+            }?.let { rank -> rank to w }
+        }.sortedBy { it.first }.map { it.second }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, ALL_WORDS)
 
     fun toggleFavorite(id: String) = viewModelScope.launch { repo.toggle(id) }

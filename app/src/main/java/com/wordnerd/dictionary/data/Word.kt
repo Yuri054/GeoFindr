@@ -7,6 +7,8 @@ import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Forest
+import androidx.compose.material.icons.outlined.HistoryEdu
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.TheaterComedy
@@ -22,6 +24,8 @@ enum class Category(val label: String, val icon: ImageVector) {
     TIME("Time & Seasons", Icons.Outlined.Schedule),
     FOOD("Food & Drink", Icons.Outlined.Restaurant),
     MISCHIEF("Mischief & Nonsense", Icons.Outlined.TheaterComedy),
+    MIND("Mind & Thought", Icons.Outlined.Psychology),
+    EPONYMS("Words from Names", Icons.Outlined.HistoryEdu),
 }
 
 data class Word(

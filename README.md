@@ -1,7 +1,7 @@
 # Word Nerd — a dictionary of obscure & enchanting words
 
 An Android app for collecting delightful, rarely used words: *petrichor*, *apricity*,
-*mundivagant*, *pogonophile*, *tarantism* and about 135 more. Built with Kotlin, Jetpack
+*mundivagant*, *pogonophile*, *schadenfreude*, *kvell*, *Kafkaesque* and nearly 480 more. Built with Kotlin, Jetpack
 Compose and Material 3 (Material You), in the style of Google's own apps.
 
 | Today | Browse | Search | Word | Saved |
@@ -16,7 +16,8 @@ Compose and Material 3 (Material You), in the style of Google's own apps.
 - **Word of the day**: a new word every day, with Save and Share buttons.
 - **Discover**: shuffle through random words.
 - **Browse**: the whole lexicon A–Z with sticky letter headers, a pill search bar that
-  searches headwords and meanings, and filter chips for 9 themes.
+  searches words, meanings and origins (try "Yiddish" or "Greek"), and filter chips
+  for 11 themes, including Mind & Thought and Words from Names.
 - **Word pages**: pronunciation (tap the speaker to hear it read aloud), part of speech,
   definition, an example sentence, origin/etymology, and related words.
 - **Saved**: bookmark favourites; they are kept on the device with DataStore.
@@ -28,6 +29,12 @@ Compose and Material 3 (Material You), in the style of Google's own apps.
   edge-to-edge, splash screen, and a themed adaptive icon.
 
 All definitions, etymologies and example sentences are written fresh for this app.
+
+### What makes the cut
+Every word is either in standard English dictionaries (Merriam-Webster / OED) with some
+living use, or a loanword English speakers genuinely use and write about (*hygge*,
+*wabi-sabi*, *Weltschmerz*, *chutzpah*). Internet-only coinages and words that are only
+recorded once in old texts are left out.
 
 ## Install
 Sideload `WordNerd.apk` (a release build signed with a debug key) on Android 8.0 or later.
